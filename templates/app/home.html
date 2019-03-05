@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+
+{% if user.is_authenticated %}
+    {% block welcome %}
+    <li id="welcome" class="nav-item">
+    	Welcome, {{ user.get_full_name }}
+    </li>
+    {% endblock %}
+
+    {% block user_picture %}
+        {% if user_data %}
+        	{% if provider == "google" %}
+        		<img class="img-thumbnail rounded-circle" src="{{user_data.picture}}" width="60" height="60">
+        	{% else %}
+        		<img class="img-thumbnail rounded-circle" src="{{user_data.avatar_url}}" width="60" height="60">
+        	{% endif %}
+        {% else %}
+        	<div data-toggle="dropdown"><i class='fas fa-user-circle' style='font-size:38px;color:grey'></i></div>
+        {% endif %}
+    	
+    {% endblock %}
+{% endif %}
+
+
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+	    Welcome {{ user.email }}
+	    QQ {{ provider }} QQ {{ user_data }}
+	    <p><a href="/accounts/logout">Logout</a></p>
+	{% else %}
+	    <p><a href="/accounts/login">Login</a></p>
+	    <p><a href="/accounts/register">Register</a></p>
+	{% endif %}
+	
+{% endblock %}
