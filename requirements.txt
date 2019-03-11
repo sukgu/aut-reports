@@ -11,3 +11,4 @@ django-rest-auth==0.9.3
 django-tables2==2.0.5
 djangorestframework==3.9.1
 gunicorn
+whitenoise

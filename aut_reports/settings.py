@@ -25,7 +25,7 @@ SECRET_KEY = 'ce$s3o8*+^g(ftu8(!=ku8$39ln_%%mqo!=l5%s=)x)2wnu(g('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aut-reports.herokuapp.com','localhost','example.com']
 
 
 # Application definition
@@ -66,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'aut_reports.urls'
@@ -172,6 +173,8 @@ STATICFILES_DIRS =(
 )
 
 STATIC_URL = "/static/"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 LOGGING = {
