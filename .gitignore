@@ -92,3 +92,4 @@ local_settings.py
 
 .env
 db.sqlite3
+aut_reports/settings.py
