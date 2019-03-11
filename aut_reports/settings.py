@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	#'whitenoise.middleware.WhiteNoiseMiddleware',
+	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'aut_reports.urls'
@@ -165,16 +165,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-STATIC_ROOT = "/static/"
+#STATIC_ROOT = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS =(
-# os.path.join(os.path.dirname(BASE_DIR),"static","static"),
-  os.path.join(BASE_DIR, "static"),
+#  os.path.join(os.path.dirname(BASE_DIR),"static","static"),
+   os.path.join(BASE_DIR, "static"),
 )
 
 STATIC_URL = "/static/"
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 LOGGING = {
@@ -231,7 +232,7 @@ EMAIL_HOST_USER='XXXXXXXX@gmail.com'
 EMAIL_HOST_PASSWORD=''
 EMAIL_USE_TLS=True
 
-#MEDIA_URL = '/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
 
 #DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
