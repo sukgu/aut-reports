@@ -1,0 +1,31 @@
+{% extends 'home.html' %}
+{% load render_table from django_tables2 %}
+
+
+{% block testrun_dropdown %}
+
+	
+	<div class="dropdown">
+	    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+	      Select TestRun
+	    </button>
+	    
+	    <div class="dropdown-menu">
+	    {% for testrun in testrun_list %}
+		    <a class="dropdown-item" href="{% url 'testcase_table' testrun.id %}">{{ testrun.title }}</a>
+		{% endfor %}
+		  
+		  <span class="dropdown-item-text"><b>Select testrun to view...</b></span>
+		</div>
+	    
+	</div>
+
+{% endblock %}
+
+{% block report_tables %}
+		
+    <div>
+        {% render_table testcase %}
+    </div>
+    
+{% endblock %}

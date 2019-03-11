@@ -1,0 +1,83 @@
+{% extends 'home.html' %}
+{% load render_table from django_tables2 %}9
+
+{% block testrun_dropdown %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<div class="row">
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            $('#sel1').on('change',function(){
+            	var param_1 = $('#sel1').val();
+               	var param_2 = $('#sel2').val();
+               	var url = "/app/reports/compare/";
+               	url = url+""+param_1+"/"+param_2+"/";
+               	console.log(url);
+               	$("#link").attr("href", url);
+            });
+        });
+        
+        $(document).ready(function() {
+        	$('#sel2').on('change',function(){
+            	var param_1 = $('#sel1').val();
+               	var param_2 = $('#sel2').val();
+               	var url = "/app/reports/compare/";
+               	url = url+""+param_1+"/"+param_2+"/";
+               	console.log(url);
+               	$("#link").attr("href", url);
+            });
+        });
+        
+        $(document).ready(function() {
+           	var param_1 = $('#sel1').val();
+           	var param_2 = $('#sel2').val();
+           	var url = $('#link').attr('href');
+           	url = url+""+param_1+"/"+param_2+"/";
+           	$("#link").attr("href", url);
+        });
+</script>
+
+	<div class="dropdown col-sm-4">
+		<div class="form-group">
+	      <label for="sel1">Select TestRun 1:</label>
+	      <select class="form-control" id="sel1" name="sellist1">
+	        
+	        {% for testrun in testrun_list %}
+	        <option value="{{ testrun.id }}">
+			    <a class="dropdown-item" href="{% url 'compare_reports' testrun.id %}">{{ testrun.title }}</a>
+			</option>
+			{% endfor %}
+	        
+	      </select>
+	    </div>
+	</div>
+	
+	<div class="dropdown col-sm-4">
+		<div class="form-group">
+	      <label for="sel1">Select TestRun 2:</label>
+	      <select class="form-control" id="sel2" name="sellist1">
+	        
+	        {% for testrun in testrun_list %}
+	        <option value="{{ testrun.id }}">
+			    <a class="dropdown-item" href="{% url 'compare_reports' testrun.id %}">{{ testrun.title }}</a>
+			</option>
+			{% endfor %}
+	        
+	      </select>
+	    </div>
+	</div>
+	<div class="col-sm-4">
+		<label for="sel1">Click to get Result:</label>
+		<a id="link" href="/app/reports/compare/"><button class="btn btn-success form-control" type="Submit">Submit</button></a>
+	</div>
+	
+</div>	
+{% endblock %}
+
+{% block report_tables %}
+		
+    <div>
+        {% render_table testcase %}
+    </div>
+    
+{% endblock %}

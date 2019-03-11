@@ -106,7 +106,7 @@ span {
 #sidebar.active ul ul a {
     padding: 10px !important;
 }
-
+/*
 #sidebar.active .dropdown-toggle::after {
     top: auto;
     bottom: 10px;
@@ -115,7 +115,7 @@ span {
     -ms-transform: translateX(50%);
     transform: translateX(50%);
 }
-
+*/
 #sidebar .sidebar-header {
     padding: 20px;
     background: #6d7fcc;
@@ -155,7 +155,7 @@ a[aria-expanded="true"] {
 a[data-toggle="collapse"] {
     position: relative;
 }
-
+/*
 .dropdown-toggle::after {
     display: block;
     position: absolute;
@@ -163,7 +163,7 @@ a[data-toggle="collapse"] {
     right: 20px;
     transform: translateY(-50%);
 }
-
+*/
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;

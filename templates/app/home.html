@@ -29,9 +29,12 @@
 	    Welcome {{ user.email }}
 	    QQ {{ provider }} QQ {{ user_data }}
 	    <p><a href="/accounts/logout">Logout</a></p>
+	    <p><a href="/app/upload">Upload</a></p>
 	{% else %}
 	    <p><a href="/accounts/login">Login</a></p>
 	    <p><a href="/accounts/register">Register</a></p>
 	{% endif %}
+	
+	
 	
 {% endblock %}

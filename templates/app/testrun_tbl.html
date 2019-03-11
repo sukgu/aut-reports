@@ -1,0 +1,10 @@
+<!-- {% extends 'home.html' %} -->
+{% load render_table from django_tables2 %}
+
+{% block report_tables %}
+			
+    <div>
+        {% render_table testrun %}
+    </div>
+    
+{% endblock %}

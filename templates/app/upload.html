@@ -1,0 +1,30 @@
+{% extends 'home.html' %}
+
+{% load static %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>{{ form.non_field_errors }}</p>
+    <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+    <p>
+        {{ form.docfile.errors }}
+        {{ form.docfile }}
+    </p>
+    <table>
+    {{ form.as_table }}
+    <tr>
+    <td></td><td><button type="submit" class="btn btn-primary">Upload</button></td>
+    </tr>
+    </table>
+    
+  </form>
+
+  {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+  {% endif %}
+
+  <p><a href="{% url 'app' %}">Return to home</a></p>
+  
+   
+{% endblock %}

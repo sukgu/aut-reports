@@ -18,11 +18,13 @@ from django.urls import path
 from django.urls.conf import include
 from app import views
 
+from django.conf.urls import url
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auth.urls')),
     path('accounts/', include('allauth.urls')),
-    path('app/', views.App.as_view(), name='app'),
     path('contact/', views.ContactView.as_view(),name="contact_form"),
     path('', views.Home.as_view(), name='home'),
+    path('app/', include('app.urls')),
 ]
