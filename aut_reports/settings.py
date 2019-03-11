@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'whitenoise.middleware.WhiteNoiseMiddleware',
+	#'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'aut_reports.urls'
@@ -174,7 +174,7 @@ STATICFILES_DIRS =(
 
 STATIC_URL = "/static/"
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 LOGGING = {
@@ -231,7 +231,7 @@ EMAIL_HOST_USER='XXXXXXXX@gmail.com'
 EMAIL_HOST_PASSWORD=''
 EMAIL_USE_TLS=True
 
-MEDIA_URL = '/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
+#MEDIA_URL = '/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
 
 #DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
