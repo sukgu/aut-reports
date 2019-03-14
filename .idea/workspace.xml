@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7809b9bb-50c5-44c0-be6b-8e56c03b299c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aut_reports/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/aut_reports/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/about/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/about/contact.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/email.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/email.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/logout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/logout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_change.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/password_change.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_reset_from_key.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/password_reset_from_key.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_set.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/password_set.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/account/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/app.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/compare_reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/compare_reports.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/reports.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/reports.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/testcase_tbl.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/testcase_tbl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/testrun_tbl.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/testrun_tbl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/app/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/app/upload.html" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-985162671">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="10" />
+    <option name="y" value="20" />
+    <option name="width" value="1346" />
+    <option name="height" value="688" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="aut-reports" type="b2602c69:ProjectViewProjectNode" />
+              <item name="aut-reports" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7809b9bb-50c5-44c0-be6b-8e56c03b299c" name="Default Changelist" comment="" />
+      <created>1552552619069</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552552619069</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24330357" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+</project>

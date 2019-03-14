@@ -13,11 +13,13 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from allauth.socialaccount.models import SocialAccount
-from app.models import Document, TestRun, Testcase, CompareModel
+from app.models import Document, TestRun, Testcase, CompareModel, Version
 from datetime import datetime
 from app.utils import get_object_from_json
 from app.tables import TestRunTable, TestcaseTable, CompareModelTable
 from django_tables2.config import RequestConfig
+from django.http.response import JsonResponse
+from django.core import serializers
 
 FILE_FORMAT_CHOICES = (
     ('json', 'Json'),
@@ -28,15 +30,16 @@ FILE_FORMAT_CHOICES = (
 class Home(TemplateView):
     template_name = 'home.html'
 
-@method_decorator(login_required, name="dispatch")   
+  
 class App(TemplateView):
     models = TokenModel
     template_name = 'app/home.html'
-    
+
     def get(self, request, *args, **kwargs):
-        data=SocialAccount.objects.get(user=request.user)
-        provider=data.provider
-        return render(request,self.template_name,{'user_data':data.extra_data,'provider':provider})
+        #data=SocialAccount.objects.get(user=request.user)
+        #provider=data.provider
+        #return render(request,self.template_name,{'user_data':data.extra_data,'provider':provider})
+        return render(request,self.template_name)
         
         
     
@@ -48,22 +51,69 @@ class ContactForm(forms.Form):
     def send_email(self):
         # send email using the self.cleaned_data dictionary
         pass
+
     
 class ContactView(FormView):
     template_name = 'about/contact.html'
     form_class = ContactForm
     
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
         form.send_email()
         return super().form_valid(form)
+    
+    def get_initial(self):
+        initial = super(ContactView, self).get_initial()
+        if self.request.user.is_authenticated:
+            initial.update({'name': self.request.user.get_full_name()})
+        return initial
+    
+    def get_context_data(self, **kwargs):
+        if not self.request.user.is_anonymous:
+            data=SocialAccount.objects.get(user=self.request.user)
+            provider=data.provider
+            context = super(ContactView, self).get_context_data(**kwargs)
+            context['user_data'] = data.extra_data
+            context['provider'] = provider
+            return context
+        else:
+            context = super(ContactView, self).get_context_data(**kwargs)
+            return context
+        
+        
+    
+#===============================================================================
+#     def get(self, request, *args, **kwargs):
+#         initial = None
+#         if request.user.is_authenticated:
+#             initial = {'name': request.user.get_full_name()}
+#         form = ContactForm(initial=initial)
+#         data=SocialAccount.objects.get(user=self.request.user)
+#         provider=data.provider
+#         context = {'form': form,'user_data':data.extra_data,'provider':provider}
+#         return render(request, 'about/contact.html', context)
+# 
+#     def post(self, request, *args, **kwargs):
+#         initial = None
+#         if request.user.is_authenticated:
+#             initial = {'name': request.user.get_full_name()}
+#         form = ContactForm(initial=initial, data=request.POST)
+#         data=SocialAccount.objects.get(user=self.request.user)
+#         provider=data.provider
+#         if form.is_valid():
+#             self.send_mail(form.cleaned_data)
+#             form = ContactForm(initial=initial)
+#             data=SocialAccount.objects.get(user=self.request.user)
+#             provider=data.provider
+#             return render(request, 'about/contact.html', {'form': form,'user_data':data.extra_data,'provider':provider})
+#         return render(request, 'about/contact.html', {'form': form,'user_data':data.extra_data,'provider':provider})
+#===============================================================================
     
 class UploadForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ('document',)
-    
+
+@method_decorator(login_required, name="dispatch")     
 class UploadView(FormView):
     template_name = 'app/upload.html'
     form_class = UploadForm
@@ -100,15 +150,26 @@ class UploadView(FormView):
     def form_valid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
     
+    def get_context_data(self, **kwargs):
+        data=SocialAccount.objects.get(user=self.request.user)
+        provider=data.provider
+        context = super(UploadView, self).get_context_data(**kwargs)
+        context['user_data'] = data.extra_data
+        context['provider'] = provider
+        return context
+    
 ###########################################################
     
 from chartjs.views.lines import BaseLineChartView
 
-
+@method_decorator(login_required, name="dispatch") 
 class LineChartJSONView(BaseLineChartView):
         
     def get_labels(self):
-        testrun = TestRun.testrun.filter(user=self.request.user)
+        version = Version.version.filter(user=self.request.user)
+        print(version.get())
+        testrun = TestRun.testrun.filter(version=version.get())
+        print(testrun)
         data = [testrun[0].title,testrun[1].title]
         return data
 
@@ -116,7 +177,9 @@ class LineChartJSONView(BaseLineChartView):
         return ["Passed", "Failed"]
 
     def get_data(self):
-        testruns = TestRun.testrun.filter(user=self.request.user)
+        version = Version.version.filter(user=self.request.user)
+        print(version.get())
+        testruns = TestRun.testrun.filter(version=version.get())
         data1 = []
         data2 = []
         for test_run in testruns:
@@ -131,18 +194,44 @@ class LineChartJSONView(BaseLineChartView):
 line_chart = TemplateView.as_view(template_name='app/reports.html')
 line_chart_json = LineChartJSONView.as_view()
 
+@login_required
 def tbl_testrun(request):
+    try:
+        data=SocialAccount.objects.get(user=request.user)
+        provider=data.provider
+    except:
+        data=request.user
+        provider="App"
+        
     table = TestRunTable(TestRun.testrun.filter(user=request.user))
     RequestConfig(request).configure(table)
-    return render(request, 'app/testrun_tbl.html', {'testrun': table})
+    return render(request, 'app/testrun_tbl.html', {'testrun': table,'user_data':data.extra_data,'provider':provider})
 
+@login_required
 def tbl_testcase(request,testrun_id):
+    try:
+        data=SocialAccount.objects.get(user=request.user)
+        provider=data.provider
+    except:
+        data=request.user
+        provider="App"
+        
     table = TestcaseTable(Testcase.testcase.filter(testrun=testrun_id))
     testrun = TestRun.testrun.filter(user=request.user)
     RequestConfig(request).configure(table)
-    return render(request, 'app/testcase_tbl.html', {'testcase': table, "testrun_list":testrun})
+    return render(request, 'app/testcase_tbl.html', {'testcase': table, "testrun_list":testrun,'user_data':data.extra_data,'provider':provider})
 
+@login_required 
 def compare_reports(request,testrun_id1=1,testrun_id2=1):
+    try:
+        data=SocialAccount.objects.get(user=request.user)
+        provider=data.provider
+        user_extra_data=data.extra_data
+    except:
+        data=request.user
+        provider="App"
+        user_extra_data=None
+    
     query1 = Testcase.testcase.filter(testrun=testrun_id1)
     query2 = Testcase.testcase.filter(testrun=testrun_id2)
     models = []
@@ -152,15 +241,31 @@ def compare_reports(request,testrun_id1=1,testrun_id2=1):
                 models.append(CompareModel(title=testcase1.title,result_1=testcase1.result,result_2=testcase2.result))
     
     table = CompareModelTable(models)
-    testrun = TestRun.testrun.filter(user=request.user)
+    version = Version.version.filter(user=request.user)
+    testrun = TestRun.testrun.filter(version=version.first())
     RequestConfig(request).configure(table)
-    return render(request, 'app/compare_reports.html', {'testcase': table, "testrun_list":testrun})
+    return render(request, 'app/compare_reports.html', {'version_list':version, 'testcase': table, "testrun_list":testrun,'user_data':user_extra_data,'provider':provider})
 
+@login_required 
 def reports(request):
+    try:
+        data=SocialAccount.objects.get(user=request.user)
+        provider=data.provider
+    except:
+        data=request.user
+        provider="App"
+        
     table = TestcaseTable(Testcase.testcase.filter(testrun=1))
-    testrun = TestRun.testrun.filter(user=request.user)
+    version = Version.version.filter(user=request.user)
+    testrun = TestRun.testrun.filter(version=version)
     RequestConfig(request).configure(table)
-    return render(request, 'app/app.html', {'testcase': table, "testrun_list":testrun})
+    return render(request, 'app/app.html', {'testcase': table, "testrun_list":testrun,'user_data':data.extra_data,'provider':provider})
+
+def testrun_list(request):
+    _version = request.GET.get('_version', None)
+    version = Version.version.filter(id=_version)
+    testrun = TestRun.testrun.filter(version=version.get())
+    return JsonResponse({"list": list(testrun.values())})
 
     
     

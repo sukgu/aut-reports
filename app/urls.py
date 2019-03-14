@@ -18,4 +18,5 @@ urlpatterns = [
     path('reports/json/', views.line_chart_json,name='line_chart_json'),
     path('tr_table/', views.tbl_testrun,name='testrun_table'),
     path('tc_table/<int:testrun_id>/', views.tbl_testcase,name='testcase_table'),
+    path('ajax/testrun_list/', views.testrun_list,name='testrun_list'),
 ]

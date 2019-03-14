@@ -10,12 +10,21 @@ class TestRunManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()
     
+class VersionManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+    
 class CompareManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()
     
-class TestRun(models.Model):
+class Version(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)
+    title = models.CharField(max_length=500, default="default")
+    version = VersionManager()
+    
+class TestRun(models.Model):
+    version = models.ForeignKey(Version, on_delete=models.CASCADE,default=1)
     title = models.CharField(max_length=500)
     run_count = models.IntegerField()
     last_run = models.DateTimeField()
@@ -27,9 +36,9 @@ class TestRun(models.Model):
         return self.title
 
 class Testcase(models.Model):
+    testrun = models.ForeignKey(TestRun, on_delete=models.CASCADE,default=1)
     title = models.CharField(max_length=500)
     result = models.BooleanField(default=False)
-    testrun = models.ForeignKey(TestRun, on_delete=models.CASCADE,default=1)
     testcase = TestcaseManager()
     
     def __str__(self):
@@ -58,6 +67,9 @@ class CompareModel(models.Model):
 
     class Meta:
         managed = False
+        
+
+    
     
 
     

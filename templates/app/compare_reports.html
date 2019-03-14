@@ -1,10 +1,34 @@
-{% extends 'home.html' %}
+{% extends 'app/home.html' %}
 {% load render_table from django_tables2 %}9
 
-{% block testrun_dropdown %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<div class="row">
+{% block javascript %}
 
+<script type="text/javascript">
+$(function() {
+    $("#version-list").change(function () {
+      var version = $(this).val();
+      $.ajax({
+        url: '/app/ajax/testrun_list/',
+        data: {
+          '_version': version
+        },
+        dataType: 'json',
+        success: function (data) {
+        	html="";
+        	for(var k in data.list) {
+        		   html=html+"<option value='"+data.list[k].id+"'><a class='dropdown-item' href='#'>"+data.list[k].title+"</a></option>";
+        	}
+        	document.getElementById("sel1").innerHTML=html;
+        	document.getElementById("sel2").innerHTML=html;
+        	console.log("qa");
+        }
+      });
+
+    });
+});    
+</script>
+  
+  
 <script type="text/javascript">
         $(document).ready(function() {
             $('#sel1').on('change',function(){
@@ -35,8 +59,34 @@
            	url = url+""+param_1+"/"+param_2+"/";
            	$("#link").attr("href", url);
         });
-</script>
+</script>   
+  
+{% endblock %}
 
+
+
+{% block testrun_dropdown %}
+
+
+<div class="filters">
+
+<div class="row">	
+	<div class="dropdown col-sm-4">
+		<div class="form-group">
+	      <label for="version">Select Version:</label>
+	      <select class="form-control" id="version-list" name="version">
+	        
+	        {% for version in version_list %}
+	        <option value="{{ version.id }}">
+			    <a class="dropdown-item" href="#">{{ version.title }}</a>
+			</option>
+			{% endfor %}
+	        
+	      </select>
+	    </div>
+	</div>
+</div>
+<div class="row">
 	<div class="dropdown col-sm-4">
 		<div class="form-group">
 	      <label for="sel1">Select TestRun 1:</label>
@@ -70,7 +120,7 @@
 		<label for="sel1">Click to get Result:</label>
 		<a id="link" href="/app/reports/compare/"><button class="btn btn-success form-control" type="Submit">Submit</button></a>
 	</div>
-	
+</div>
 </div>	
 {% endblock %}
 
