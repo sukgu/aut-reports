@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
+from rest_framework.fields import JSONField
 
 class TestcaseManager(models.Manager):
     def get_queryset(self):
@@ -68,6 +69,17 @@ class CompareModel(models.Model):
     class Meta:
         managed = False
         
+
+class RestTestRunModel(models.Model):
+    version = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
+    json = JSONField
+    
+    def save(self, *args, **kwargs):
+        pass
+
+    class Meta:
+        managed = False
 
     
     

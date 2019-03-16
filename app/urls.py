@@ -5,14 +5,17 @@ Created on 03-Mar-2019
 '''
 from django.urls import path
 from app import views
+from app.views import TestRunViewSet
 
 
 urlpatterns = [
     path('', views.App.as_view(), name='app'),
     path('upload', views.UploadView.as_view(), name='upload'),
+    path('data/upload/', TestRunViewSet.as_view(),name='data_upload'),
     path('report/', views.line_chart,name='line_chart'),
     path('reports/', views.reports,name='reports'),
-    path('reports/compare/', views.compare_reports,name='compare'),
+    path('reports/compare/testrun/', views.compare,name='compare'),
+    path('reports/compare/', views.compare_reports,name='compare_reports'),
     path('reports/compare/<int:testrun_id1>/', views.compare_reports,name='compare_reports'),
     path('reports/compare/<int:testrun_id1>/<int:testrun_id2>/', views.compare_reports,name='compare_reports_full'),
     path('reports/json/', views.line_chart_json,name='line_chart_json'),

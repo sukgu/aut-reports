@@ -19,7 +19,13 @@ from app.utils import get_object_from_json
 from app.tables import TestRunTable, TestcaseTable, CompareModelTable
 from django_tables2.config import RequestConfig
 from django.http.response import JsonResponse
-from django.core import serializers
+from django.utils.translation import ugettext_lazy as _
+from app.serializers import TestRunSerializer
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status, views
+import json as JSON
 
 FILE_FORMAT_CHOICES = (
     ('json', 'Json'),
@@ -222,7 +228,7 @@ def tbl_testcase(request,testrun_id):
     return render(request, 'app/testcase_tbl.html', {'testcase': table, "testrun_list":testrun,'user_data':data.extra_data,'provider':provider})
 
 @login_required 
-def compare_reports(request,testrun_id1=1,testrun_id2=1):
+def compare_reports(request):
     try:
         data=SocialAccount.objects.get(user=request.user)
         provider=data.provider
@@ -231,7 +237,8 @@ def compare_reports(request,testrun_id1=1,testrun_id2=1):
         data=request.user
         provider="App"
         user_extra_data=None
-    
+    testrun_id1 = request.GET.get('testrun_id1', None)
+    testrun_id2 = request.GET.get('testrun_id2', None)
     query1 = Testcase.testcase.filter(testrun=testrun_id1)
     query2 = Testcase.testcase.filter(testrun=testrun_id2)
     models = []
@@ -245,6 +252,24 @@ def compare_reports(request,testrun_id1=1,testrun_id2=1):
     testrun = TestRun.testrun.filter(version=version.first())
     RequestConfig(request).configure(table)
     return render(request, 'app/compare_reports.html', {'version_list':version, 'testcase': table, "testrun_list":testrun,'user_data':user_extra_data,'provider':provider})
+
+@login_required 
+def compare(request):
+    testrun_id1 = request.GET.get('testrun_id1', None)
+    testrun_id2 = request.GET.get('testrun_id2', None)
+    query1 = Testcase.testcase.filter(testrun=testrun_id1)
+    query2 = Testcase.testcase.filter(testrun=testrun_id2)
+    models = []
+    for testcase1 in query1:
+        for testcase2 in query2:
+            if (testcase1.title == testcase2.title and testcase1.result != testcase2.result) or (testcase1.title == testcase2.title and testcase1.result == testcase2.result == False):
+                models.append(CompareModel(title=testcase1.title,result_1=testcase1.result,result_2=testcase2.result))
+    
+    table = CompareModelTable(models)
+    RequestConfig(request).configure(table)
+    print(table.as_html(request))
+    return JsonResponse({"table": table.as_html(request)})
+
 
 @login_required 
 def reports(request):
@@ -267,5 +292,55 @@ def testrun_list(request):
     testrun = TestRun.testrun.filter(version=version.get())
     return JsonResponse({"list": list(testrun.values())})
 
+
+class TestRunViewSet(GenericAPIView):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = TestRun.testrun.all()
+    serializer_class = TestRunSerializer
+    permission_classes = (AllowAny,)
+    
+    
+    def post(self, request, *args, **kwargs):
+        # Create a serializer with request.data
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        #serializer.errors
+        #serializer.save()
+        data = serializer.data
+        testcase_list = []
+        passed = 0
+        failed = 0
+        print(data)
+        #json_data = JSON.dumps(data)
+        #print(json_data)
+        json = data['json']
+        print(json)
+        for key in json:
+            testcase_list.append(key)
+            if json[key] == "pass":
+                passed+=1
+            elif json[key] == "fail":
+                failed+=1
+                
+        version,created = Version.version.get_or_create(user=request.user, title=data['version'])
+        if created:
+            print(version.title + "created successfully")
+            
+        testrun = TestRun.testrun.create(version=version,title=data['title'],last_run=datetime.now(),run_count=len(testcase_list),passed=passed,failed=failed)
+        
+        for key in json:
+            result = json[key]
+            if result == "pass":
+                result = "True"
+            elif result == "fail":
+                result = "False"
+            Testcase.testcase.create(testrun=testrun,title=key,result=result)
+            
+        return Response(
+            {"detail": _("Testrun successfully updated in database.")},
+            status=status.HTTP_200_OK
+        )
     
     

@@ -1,5 +1,5 @@
 {% extends 'app/home.html' %}
-{% load render_table from django_tables2 %}9
+{% load render_table from django_tables2 %}
 
 {% block javascript %}
 
@@ -20,7 +20,6 @@ $(function() {
         	}
         	document.getElementById("sel1").innerHTML=html;
         	document.getElementById("sel2").innerHTML=html;
-        	console.log("qa");
         }
       });
 
@@ -30,35 +29,62 @@ $(function() {
   
   
 <script type="text/javascript">
-        $(document).ready(function() {
-            $('#sel1').on('change',function(){
-            	var param_1 = $('#sel1').val();
-               	var param_2 = $('#sel2').val();
-               	var url = "/app/reports/compare/";
-               	url = url+""+param_1+"/"+param_2+"/";
-               	console.log(url);
-               	$("#link").attr("href", url);
-            });
-        });
+
+	$(document).ready(function() {
+	    $('#sel1').on('change',function(){
+	    	var param_1 = $('#sel1').val();
+	       	var param_2 = $('#sel2').val();
+	       	console.log(param_1);
+	       	console.log(param_2);
+	       	if(param_1 != "" & param_2 != "") {
+		       	
+		       	$.ajax({
+		            url: '/app/reports/compare/testrun/',
+		            data: {
+		              'testrun_id1': param_1,
+		              'testrun_id2': param_2
+		            },
+		            dataType: 'json',
+		            success: function (data) {
+		            	console.log(data);
+		            	document.getElementById("compare_table").innerHTML=data.table;
+		            }
+		          });
+		       	
+	       	} else {
+	       		document.getElementById("compare_table").innerHTML="<span class='badge badge-info'>You have no testruns!</span>";
+	       	}
+	       	
+	    });
+	    
+	    $('#sel2').on('change',function(){
+	    	var param_1 = $('#sel1').val();
+	       	var param_2 = $('#sel2').val();
+	       	console.log(param_1);
+	       	console.log(param_2);
+	       	if(param_1 != "" & param_2 != "") {
+		       	
+		       	$.ajax({
+		            url: '/app/reports/compare/testrun/',
+		            data: {
+		              'testrun_id1': param_1,
+		              'testrun_id2': param_2
+		            },
+		            dataType: 'json',
+		            success: function (data) {
+		            	console.log(data);
+		            	document.getElementById("compare_table").innerHTML=data.table;
+		            }
+		          });
+		       	
+	       	} else {
+	       		document.getElementById("compare_table").innerHTML="<span class='badge badge-info'>You have no testruns!</span>";
+	       	}
+	       	
+	    });
+	});
+       
         
-        $(document).ready(function() {
-        	$('#sel2').on('change',function(){
-            	var param_1 = $('#sel1').val();
-               	var param_2 = $('#sel2').val();
-               	var url = "/app/reports/compare/";
-               	url = url+""+param_1+"/"+param_2+"/";
-               	console.log(url);
-               	$("#link").attr("href", url);
-            });
-        });
-        
-        $(document).ready(function() {
-           	var param_1 = $('#sel1').val();
-           	var param_2 = $('#sel2').val();
-           	var url = $('#link').attr('href');
-           	url = url+""+param_1+"/"+param_2+"/";
-           	$("#link").attr("href", url);
-        });
 </script>   
   
 {% endblock %}
@@ -116,17 +142,19 @@ $(function() {
 	      </select>
 	    </div>
 	</div>
+	<!-- 
 	<div class="col-sm-4">
 		<label for="sel1">Click to get Result:</label>
 		<a id="link" href="/app/reports/compare/"><button class="btn btn-success form-control" type="Submit">Submit</button></a>
 	</div>
+	 -->
 </div>
 </div>	
 {% endblock %}
 
 {% block report_tables %}
 		
-    <div>
+    <div id="compare_table">
         {% render_table testcase %}
     </div>
     

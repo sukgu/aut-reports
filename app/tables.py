@@ -19,6 +19,9 @@ class CompareModelTable(tables.Table):
         model = CompareModel
         template_name = 'django_tables2/bootstrap4.html'
         fields = ("title", "result_1","result_2")
+        attrs = {
+        'class': 'table table-hover table-bordered',
+        }
         
 class TestRunTable(tables.Table):
     title = tables.Column()
