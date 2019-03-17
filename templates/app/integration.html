@@ -1,0 +1,39 @@
+{% extends 'app/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+
+	function copy_token() {
+	  /* Get the text field */
+	  var copyText = document.getElementById("token");
+	  copyText.select();
+	  document.execCommand("copy");
+	  $('#btn_copy').attr('class', 'btn btn-info');
+	  $('[data-toggle="tooltip"]').attr('data-original-title', 'Copied to clipboard !').tooltip('show');
+	}
+	
+	$(document).ready(function(){
+  		$('[data-toggle="tooltip"]').tooltip(); 
+	});
+	
+	
+</script>
+
+{% endblock %}
+
+{% block content %}
+  	
+  	<div class="container">
+  	
+	
+    <div class="form-group">
+	  <label for="token">Token:</label>
+	  <input type="text" class="form-control" id="token" value="{{ token }}" >
+	</div>
+   
+    <button type="button" class="btn btn-primary" onclick="copy_token()" data-toggle="tooltip" id="btn_copy" title="Click to Copy">Copy</button>   
+    </div>
+   
+{% endblock %}

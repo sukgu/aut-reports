@@ -12,6 +12,9 @@ urlpatterns = [
     path('', views.App.as_view(), name='app'),
     path('upload', views.UploadView.as_view(), name='upload'),
     path('data/upload/', TestRunViewSet.as_view(),name='data_upload'),
+    path('edit_profile/', views.edit_profile,name='edit_profile'),
+    path('integration/', views.integration,name='integration'),
+    path('password/', views.change_password,name='change_password'),
     path('report/', views.line_chart,name='line_chart'),
     path('reports/', views.reports,name='reports'),
     path('reports/compare/testrun/', views.compare,name='compare'),
@@ -22,4 +25,5 @@ urlpatterns = [
     path('tr_table/', views.tbl_testrun,name='testrun_table'),
     path('tc_table/<int:testrun_id>/', views.tbl_testcase,name='testcase_table'),
     path('ajax/testrun_list/', views.testrun_list,name='testrun_list'),
+    path('rest/create_token/', views.token_request,name='create_token'),
 ]

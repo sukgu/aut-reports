@@ -24,8 +24,13 @@ from app.serializers import TestRunSerializer
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status, views
-import json as JSON
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm,\
+    ReadOnlyPasswordHashField
+from django.contrib.auth.models import User
+from attr.filters import exclude
 
 FILE_FORMAT_CHOICES = (
     ('json', 'Json'),
@@ -118,6 +123,62 @@ class UploadForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ('document',)
+        
+class UserEditForm(UserChangeForm):
+    password = ReadOnlyPasswordHashField(
+        label=_("Password"),
+        help_text=_(
+            "Raw passwords are not stored, so there is no way to see this "
+            "user's password, but you can change the password using "
+            "<a href=\"/accounts/password/change/\" class=\"text-success font-weight-bold\">This Form</a>."
+        ),
+    )
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name','password',)
+        exclude = ('password',)
+        
+@login_required     
+def edit_profile(request):
+    
+    if request.method == 'POST':
+        form = UserEditForm(request.POST,instance=request.user)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('edit_profile')
+    else:
+        form = UserEditForm(instance=request.user)
+        args = {'form':form}
+        return render(request,'app/profile.html', args)
+    
+@login_required     
+def change_password(request):
+    
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST,user=request.user)
+        
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('edit_profile')
+        else:
+            return redirect('change_password')
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form':form}
+        return render(request,'app/profile.html', args)
+    
+    
+@login_required     
+def integration(request):
+    
+    if request.method == 'GET':
+        token = token_request(request)
+        print(token)
+        args = {'token':token[0]}
+        return render(request,'app/integration.html', args)
+    
 
 @method_decorator(login_required, name="dispatch")     
 class UploadView(FormView):
@@ -342,5 +403,11 @@ class TestRunViewSet(GenericAPIView):
             {"detail": _("Testrun successfully updated in database.")},
             status=status.HTTP_200_OK
         )
+        
+
+@login_required
+def token_request(request):
+    new_token = Token.objects.get_or_create(user=request.user)
+    return new_token
     
     
