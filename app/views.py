@@ -233,10 +233,9 @@ from chartjs.views.lines import BaseLineChartView
 class LineChartJSONView(BaseLineChartView):
         
     def get_labels(self):
-        version = Version.version.filter(user=self.request.user)
-        print(version.get())
+        version = Version.version.filter(user=self.request.user).filter(title='default')
         testrun = TestRun.testrun.filter(version=version.get())
-        print(testrun)
+        print(testrun.all())
         data = [testrun[0].title,testrun[1].title]
         return data
 
@@ -244,7 +243,7 @@ class LineChartJSONView(BaseLineChartView):
         return ["Passed", "Failed"]
 
     def get_data(self):
-        version = Version.version.filter(user=self.request.user)
+        version = Version.version.filter(user=self.request.user).filter(title='default')
         print(version.get())
         testruns = TestRun.testrun.filter(version=version.get())
         data1 = []
