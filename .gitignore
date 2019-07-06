@@ -91,4 +91,9 @@ __pycache__/
 local_settings.py
 
 .env
-#db.sqlite3
+db.sqlite3
+# Text backup files
+*.bak
+
+# Database
+*.sqlite3

@@ -27,4 +27,5 @@ urlpatterns = [
     path('contact/', views.ContactView.as_view(),name="contact_form"),
     path('', views.Home.as_view(), name='home'),
     path('app/', include('app.urls')),
+    path('about/', views.about,name='about'),
 ]

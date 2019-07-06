@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ce$s3o8*+^g(ftu8(!=ku8$39ln_%%mqo!=l5%s=)x)2wnu(g('
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
 ALLOWED_HOSTS = ['aut-reports.herokuapp.com','localhost','example.com']
 
@@ -118,6 +118,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -247,7 +248,7 @@ LOGGING = {
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
-EMAIL_HOST_USER='sushil106768@gmail.com'
+EMAIL_HOST_USER=os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_PASSWORD')
 EMAIL_USE_TLS=True
 
@@ -255,3 +256,8 @@ MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'documents')
 
 #DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap-responsive.html'
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)

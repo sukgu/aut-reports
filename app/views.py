@@ -80,10 +80,17 @@ class ContactView(FormView):
     
     def get_context_data(self, **kwargs):
         if not self.request.user.is_anonymous:
-            data=SocialAccount.objects.get(user=self.request.user)
-            provider=data.provider
+            try:
+                data=SocialAccount.objects.get(user=self.request.user)
+                provider=data.provider
+            except:
+                data=self.request.user
+                provider="App"
+            
             context = super(ContactView, self).get_context_data(**kwargs)
-            context['user_data'] = data.extra_data
+            if provider != "App":
+                context['user_data'] = data.extra_data
+            
             context['provider'] = provider
             return context
         else:
@@ -178,6 +185,10 @@ def integration(request):
         print(token)
         args = {'token':token[0]}
         return render(request,'app/integration.html', args)
+    
+    
+def about(request):
+    return render(request,"about/about.html")
     
 
 @method_decorator(login_required, name="dispatch")     
@@ -340,6 +351,7 @@ def reports(request):
         data=request.user
         provider="App"
         
+    
     table = TestcaseTable(Testcase.testcase.filter(testrun=1))
     version = Version.version.filter(user=request.user)
     testrun = TestRun.testrun.filter(version=version)

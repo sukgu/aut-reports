@@ -10,7 +10,7 @@
     {% block user_picture %}
         {% if user_data %}
         	{% if provider == "google" %}
-        		<img class="img-thumbnail rounded-circle" src="{{user_data.picture}}" width="60" height="60">
+        		<img class="img-thumbnail rounded-circle" src="{{user_data.picture}}" width="60" height="80">
         	{% else %}
         		<img class="img-thumbnail rounded-circle" src="{{user_data.avatar_url}}" width="60" height="60">
         	{% endif %}
