@@ -97,3 +97,4 @@ db.sqlite3
 
 # Database
 *.sqlite3
+app/migrations
