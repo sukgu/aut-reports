@@ -51,7 +51,7 @@ class Document(models.Model):
     name = models.CharField(max_length=2555, blank=True)
     document = models.FileField(upload_to='',validators=[FileExtensionValidator(allowed_extensions=['xml','json','html'])])
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    format = models.CharField(blank=False)
+    format = models.CharField(max_length=100, blank=False)
     #navigate_url = models.URLField()
     
     def __str__(self):
