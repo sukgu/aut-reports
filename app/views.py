@@ -211,7 +211,7 @@ class UploadView(FormView):
                     failed+=1
                 else:
                     passed+=1
-            testrun = TestRun(user=request.user,title=datetime.now(),last_run=datetime.now(),run_count=len(testcase_list),passed=passed,failed=failed)
+            testrun = TestRun(title=datetime.now(),last_run=datetime.now(),run_count=len(testcase_list),passed=passed,failed=failed)
             testrun.save()
             for testcase in testcase_list:
                 testcase.testrun = testrun
