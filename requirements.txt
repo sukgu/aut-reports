@@ -1,6 +1,6 @@
 api==0.0.7
 bootstrap4==0.0.5
-Django==2.1.10
+Django==2.2.24
 django-allauth==0.39.1
 django-bootstrap-base-template==0.0.2
 django-bootstrap-themes==3.3.6
